@@ -1,5 +1,5 @@
 // ❗ No need to change this component!
-import React from 'react'
+import React from 'react';
 
 export default function Quotes({
   quotes,
