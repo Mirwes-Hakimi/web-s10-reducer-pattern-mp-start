@@ -3,6 +3,7 @@ import Quotes from './Quotes'
 import QuoteForm from './QuoteForm'
 
 
+
 // 👇 these are the types of actions that can change state
 const CREATE_QUOTE = 'CREATE_QUOTE'
 const DELETE_QUOTE = 'DELETE_QUOTE'
@@ -41,6 +42,33 @@ quotes:[
     apocryphal: false,
   }
 ]
+}
+
+
+const reducer = (state, action) => {
+  switch(action.type){
+    case CREATE_QUOTE:
+      return { ...state, quotes: [
+        ...state.quotes, action.payload /// copy the existing quotes and add the new one at the end
+      ]}
+    case DELETE_QUOTE:
+      return {
+        ...state, quotes: state.quotes.filter(qt => qt.id !== action.payload)} /// first copy all qoutes then from all quotes just delete on leave the rest of it alone
+    case EDIT_QUOTE_AUTHENTICITY:
+        return {
+          ...state,
+           quotes: state.quotes.map(qt => {
+              if(qt.id !== action.payload) 
+                return qt /// We go through all the quotes using map If the quote’s id is not the one I clicked, just return it as-is.
+              return {...qt, apocryphal: !qt.apocryphal} // But if the quote’s id matches, we copy it and flip its apocryphal value.So if it was true, it becomes false, and vice versa
+          })
+        }
+    case SET_HIGHLIGHTED_QUOTE:
+       return { ...state, highlightQuotes: state.highlightQuotes === action.payload ? null : action.payload } 
+          
+    case TOGGLE_VISIBILITY:
+      return { ... state, displayAllQuotes: !state.displayAllQuotes }    
+  }
 }
 
 export default function App() {
